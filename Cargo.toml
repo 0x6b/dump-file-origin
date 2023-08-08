@@ -1,6 +1,6 @@
 [package]
 name = "macos-downloaded-url-viewer"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["k@warpnine.io"]
 edition = "2021"
 description = "A small CLI utility to view the downloaded URL of a file on macOS"
