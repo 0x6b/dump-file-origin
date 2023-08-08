@@ -7,17 +7,23 @@ use clap::Parser;
 struct Opts {
     /// Path to the file, or directory to check
     path: PathBuf,
+
+    /// Output file name, regardless of xattr kMDItemWhereFroms presence
+    #[clap(short, long)]
+    all: bool,
 }
 
 #[cfg(target_os = "macos")]
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let Opts { path } = Opts::parse();
+    let Opts { path, all } = Opts::parse();
 
     collect_files(&path)
         .iter()
         .for_each(|file| {
             if let Some(origin) = get_downloaded_url(&file) {
                 println!("{}\t{}", file.display(), origin);
+            } else if all {
+                println!("{}\t(none)", file.display());
             }
         });
 
