@@ -19,10 +19,10 @@ $ cargo uninstall macos-downloaded-url-viewer
 ```
 A small CLI utility to view the downloaded URL of a file on macOS
 
-Usage: macos-downloaded-url-viewer [OPTIONS] <PATH>
+Usage: macos-downloaded-url-viewer [OPTIONS] [PATH]
 
 Arguments:
-  <PATH>  Path to the file, or directory to check
+  [PATH]  Path to the file, or directory to check. Defaults to ~/Downloads
 
 Options:
   -a, --all      Output file name, regardless of xattr kMDItemWhereFroms presence
