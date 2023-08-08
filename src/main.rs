@@ -1,12 +1,13 @@
 use std::path::{Path, PathBuf};
 
 use clap::Parser;
+use dirs::home_dir;
 
 #[derive(Parser)]
 #[clap(about, version)]
 struct Opts {
-    /// Path to the file, or directory to check
-    path: PathBuf,
+    /// Path to the file, or directory to check. Defaults to ~/Downloads
+    path: Option<PathBuf>,
 
     /// Output file name, regardless of xattr kMDItemWhereFroms presence
     #[clap(short, long)]
@@ -16,6 +17,7 @@ struct Opts {
 #[cfg(target_os = "macos")]
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let Opts { path, all } = Opts::parse();
+    let path = path.unwrap_or_else(|| home_dir().expect("failed to get home directory. Please specify a path to check.").join("Downloads"));
 
     collect_files(&path)
         .iter()
