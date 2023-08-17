@@ -20,7 +20,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let path = path.unwrap_or_else(|| home_dir().expect("failed to get home directory. Please specify a path to check.").join("Downloads"));
 
     collect_files(&path)
-        .iter()
         .for_each(|file| {
             if let Some(origin) = get_downloaded_url(&file) {
                 println!("{}\t{}", file.display(), origin);
@@ -32,19 +31,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn collect_files(path: &Path) -> Vec<PathBuf> {
+fn collect_files(path: &Path) -> Box<dyn Iterator<Item=PathBuf>> {
     if path.is_file() {
-        vec![path.to_path_buf()]
+        Box::new(std::iter::once(path.to_path_buf()))
     } else if path.is_dir() {
-        walkdir::WalkDir::new(path)
-            .follow_links(false)
-            .into_iter()
-            .filter_map(|e| e.ok())
-            .filter(|e| e.path().is_file())
-            .map(|e| e.path().to_path_buf())
-            .collect()
+        Box::new(
+            walkdir::WalkDir::new(path)
+                .into_iter()
+                .filter_map(Result::ok)
+                .filter(|e| e.path().is_file())
+                .map(|e| e.into_path())
+        )
     } else {
-        vec![]
+        Box::new(std::iter::empty())
     }
 }
 
