@@ -48,17 +48,13 @@ fn collect_files(path: &Path) -> Box<dyn Iterator<Item=PathBuf>> {
 }
 
 fn get_downloaded_url(entry: &dyn AsRef<Path>) -> Option<String> {
-    if let Ok(Some(attr)) = xattr::get(entry, "com.apple.metadata:kMDItemWhereFroms") {
-        if let Ok(val) = plist::Value::from_reader(std::io::Cursor::new(&attr[..])) {
-            if let Some(array) = val.as_array() {
-                if array.len() == 2 {
-                    let origin = array.get(1).unwrap().as_string().unwrap();
-                    if !origin.trim().is_empty() {
-                        return Some(origin.trim().to_string());
-                    }
-                }
-            }
-        }
-    }
-    None
+    xattr::get(entry, "com.apple.metadata:kMDItemWhereFroms")
+        .ok()
+        .and_then(|v| v)
+        .and_then(|attr| plist::Value::from_reader(std::io::Cursor::new(&attr[..])).ok())
+        .and_then(|val| val.into_array())
+        .filter(|array| array.len() == 2)
+        .and_then(|array| array.get(1).map(|v| v.as_string().map(|s| s.trim().to_string())))
+        .flatten()
+        .filter(|origin| !origin.trim().is_empty())
 }
