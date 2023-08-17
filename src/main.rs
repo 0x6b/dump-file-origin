@@ -1,7 +1,14 @@
-use std::path::{Path, PathBuf};
+use std::{
+    error::Error,
+    io::Cursor,
+    iter::{empty, once},
+    path::{Path, PathBuf}
+};
 
 use clap::Parser;
 use dirs::home_dir;
+use plist::Value;
+use walkdir::WalkDir;
 
 #[derive(Parser)]
 #[clap(about, version)]
@@ -15,7 +22,7 @@ struct Opts {
 }
 
 #[cfg(target_os = "macos")]
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<(), Box<dyn Error>> {
     let Opts { path, all } = Opts::parse();
     let path = path.unwrap_or_else(|| home_dir().expect("failed to get home directory. Please specify a path to check.").join("Downloads"));
 
@@ -33,17 +40,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 fn collect_files(path: &Path) -> Box<dyn Iterator<Item=PathBuf>> {
     if path.is_file() {
-        Box::new(std::iter::once(path.to_path_buf()))
+        Box::new(once(path.to_path_buf()))
     } else if path.is_dir() {
         Box::new(
-            walkdir::WalkDir::new(path)
+            WalkDir::new(path)
                 .into_iter()
                 .filter_map(Result::ok)
                 .filter(|e| e.path().is_file())
                 .map(|e| e.into_path())
         )
     } else {
-        Box::new(std::iter::empty())
+        Box::new(empty())
     }
 }
 
@@ -51,7 +58,7 @@ fn get_downloaded_url(entry: &dyn AsRef<Path>) -> Option<String> {
     xattr::get(entry, "com.apple.metadata:kMDItemWhereFroms")
         .ok()
         .and_then(|v| v)
-        .and_then(|attr| plist::Value::from_reader(std::io::Cursor::new(&attr[..])).ok())
+        .and_then(|attr| Value::from_reader(Cursor::new(&attr[..])).ok())
         .and_then(|val| val.into_array())
         .filter(|array| array.len() == 2)
         .and_then(|array| array.get(1).map(|v| v.as_string().map(|s| s.trim().to_string())))
