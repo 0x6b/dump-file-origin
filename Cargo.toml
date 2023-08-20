@@ -1,5 +1,5 @@
 [package]
-name = "macos-downloaded-url-viewer"
+name = "dump-file-origin"
 version = "0.3.0"
 authors = ["k@warpnine.io"]
 edition = "2021"

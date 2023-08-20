@@ -1,23 +1,23 @@
-# macos-downloaded-url-viewer
+# dump-file-origin
 
 A small CLI utility to display where each file was obtained from i.e dump [kMDItemWhereFroms](https://developer.apple.com/documentation/coreservices/kmditemwherefroms). Will work on macOS 10.4+ only. 
 
 ## Install
 
 ```console
-$ cargo install --git https://github.com/0x6b/macos-downloaded-url-viewer
+$ cargo install --git https://github.com/0x6b/dump-file-origin
 ```
 
 ## Uninstall
 
 ```console
-$ cargo uninstall macos-downloaded-url-viewer
+$ cargo uninstall dump-file-origin
 ```
 
 ## Usage
 
 ```
-Usage: macos-downloaded-url-viewer [OPTIONS] [PATH]
+Usage: dump-file-origin [OPTIONS] [PATH]
 
 Arguments:
   [PATH]  Path to the file, or directory to check. Defaults to ~/Downloads
