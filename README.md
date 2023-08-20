@@ -1,6 +1,6 @@
 # macos-downloaded-url-viewer
 
-A small CLI utility to view the downloaded URL of a file on macOS.
+A small CLI utility to display where each file was obtained from. i.e dump [kMDItemWhereFroms](https://developer.apple.com/documentation/coreservices/kmditemwherefroms).
 
 ## Install
 
@@ -17,8 +17,6 @@ $ cargo uninstall macos-downloaded-url-viewer
 ## Usage
 
 ```
-A small CLI utility to view the downloaded URL of a file on macOS
-
 Usage: macos-downloaded-url-viewer [OPTIONS] [PATH]
 
 Arguments:
