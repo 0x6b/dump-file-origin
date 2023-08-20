@@ -13,7 +13,7 @@ use walkdir::WalkDir;
 #[derive(Parser)]
 #[clap(about, version)]
 struct Opts {
-    /// Path to the file, or directory to check. Defaults to ~/Downloads
+    /// Path to a file, or a directory to check. Default: ~/Downloads
     path: Option<PathBuf>,
 
     /// Output file name, regardless of xattr kMDItemWhereFroms presence
@@ -24,7 +24,7 @@ struct Opts {
 #[cfg(target_os = "macos")]
 fn main() -> Result<(), Box<dyn Error>> {
     let Opts { path, all } = Opts::parse();
-    let path = path.unwrap_or_else(|| home_dir().expect("failed to get home directory. Please specify a path to check.").join("Downloads"));
+    let path = path.unwrap_or_else(|| home_dir().expect("failed to get home directory. Please specify a path to check specifically.").join("Downloads"));
 
     collect_files(&path)
         .for_each(|file| {
