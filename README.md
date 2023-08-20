@@ -1,6 +1,6 @@
 # macos-downloaded-url-viewer
 
-A small CLI utility to display where each file was obtained from. i.e dump [kMDItemWhereFroms](https://developer.apple.com/documentation/coreservices/kmditemwherefroms).
+A small CLI utility to display where each file was obtained from i.e dump [kMDItemWhereFroms](https://developer.apple.com/documentation/coreservices/kmditemwherefroms). Will work on macOS 10.4+ only. 
 
 ## Install
 
