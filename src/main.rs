@@ -71,5 +71,5 @@ fn get_origin(file: &dyn AsRef<Path>) -> Option<String> {
                 .map(|v| v.as_string().map(|s| s.trim().to_string()))
         })
         .flatten()
-        .filter(|origin| !origin.trim().is_empty())
+        .filter(|origin| !origin.is_empty())
 }
