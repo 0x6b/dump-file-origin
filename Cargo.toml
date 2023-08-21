@@ -6,8 +6,17 @@ edition = "2021"
 description = "A small CLI utility for extracting a file's origin metadata on macOS."
 
 [dependencies]
-plist = "1.5.0"
-xattr = "1.0.1"
-walkdir = "2.3.3"
-clap = { version = "4.3.19", features = ["derive"] }
+# get HOME directory
 dirs = "5.0.1"
+
+# Command line argument parsing
+clap = { version = "4.3.19", features = ["derive"] }
+
+# Parse plist
+plist = "1.5.0"
+
+# Directory traversal
+walkdir = "2.3.3"
+
+# Read extended attributes
+xattr = "1.0.1"
