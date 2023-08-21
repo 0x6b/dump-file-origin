@@ -54,8 +54,8 @@ fn collect_files(path: &Path) -> Box<dyn Iterator<Item=PathBuf>> {
     }
 }
 
-fn get_downloaded_url(entry: &dyn AsRef<Path>) -> Option<String> {
-    xattr::get(entry, "com.apple.metadata:kMDItemWhereFroms")
+fn get_origin(file: &dyn AsRef<Path>) -> Option<String> {
+    xattr::get(file, "com.apple.metadata:kMDItemWhereFroms")
         .ok()
         .and_then(|v| v)
         .and_then(|attr| Value::from_reader(Cursor::new(&attr[..])).ok())
