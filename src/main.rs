@@ -28,10 +28,11 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     collect_files(&path)
         .for_each(|file| {
-            if let Some(origin) = get_downloaded_url(&file) {
-                println!("{}\t{}", file.display(), origin);
+            let name = file.display();
+            if let Some(origin) = get_origin(&file) {
+                println!("{name}\t{}", origin);
             } else if all {
-                println!("{}\t(none)", file.display());
+                println!("{name}\t(none)");
             }
         });
 
@@ -57,7 +58,7 @@ fn collect_files(path: &Path) -> Box<dyn Iterator<Item=PathBuf>> {
 fn get_origin(file: &dyn AsRef<Path>) -> Option<String> {
     xattr::get(file, "com.apple.metadata:kMDItemWhereFroms")
         .ok()
-        .and_then(|v| v)
+        .flatten()
         .and_then(|attr| Value::from_reader(Cursor::new(&attr[..])).ok())
         .and_then(|val| val.into_array())
         .filter(|array| array.len() == 2)
