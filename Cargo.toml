@@ -1,6 +1,6 @@
 [package]
 name = "dump-file-origin"
-version = "0.4.2"
+version = "0.4.3"
 authors = ["k@warpnine.io"]
 edition = "2021"
 description = "A small CLI utility for extracting a file's origin metadata on macOS."
