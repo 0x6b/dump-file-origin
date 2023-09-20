@@ -33,7 +33,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     collect_files(&path).for_each(|file| {
         let name = file.display();
         if let Some(origin) = get_origin(&file) {
-            println!("{name}\t{}", origin);
+            println!("{name}\t{origin}");
         } else if all {
             println!("{name}\t(none)");
         }
