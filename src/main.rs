@@ -65,11 +65,7 @@ fn get_origin(file: &dyn AsRef<Path>) -> Option<String> {
         .and_then(|attr| Value::from_reader(Cursor::new(&attr[..])).ok())
         .and_then(|val| val.into_array())
         .filter(|array| array.len() == 2)
-        .and_then(|array| {
-            array
-                .get(1)
-                .map(|v| v.as_string().map(|s| s.trim().to_string()))
-        })
+        .and_then(|array| array.get(1).map(|v| v.as_string().map(|s| s.trim().to_string())))
         .flatten()
         .filter(|origin| !origin.is_empty())
 }
